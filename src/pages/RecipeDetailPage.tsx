@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Heart, Clock, Users, Flame } from 'lucide-react';
+import DOMPurify from 'dompurify';
 import { Button } from '@/components/ui/button';
 import { useRecipeStore } from '@/store/recipeStore';
 import { extractIngredients, extractInstructions } from '@/types/recipe';
@@ -163,7 +164,10 @@ export default function RecipeDetailPage() {
             <p 
               className="text-muted-foreground leading-relaxed"
               dangerouslySetInnerHTML={{ 
-                __html: currentRecipe.summary.replace(/<a[^>]*>|<\/a>/g, '') // Remove links for security
+                __html: DOMPurify.sanitize(currentRecipe.summary, { 
+                  ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'br', 'p', 'span'],
+                  ALLOWED_ATTR: [] 
+                })
               }}
             />
           </div>
