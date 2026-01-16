@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import MobileNav from './MobileNav';
+import Footer from './Footer';
 
 interface LayoutProps {
   children: ReactNode;
@@ -33,6 +34,9 @@ export default function Layout({ children }: LayoutProps) {
 
       {/* Mobile Navigation */}
       <MobileNav />
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
