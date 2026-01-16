@@ -13,18 +13,18 @@ export default function HomePage() {
       const category = categories.find(c => c.id === selectedCategory);
       return category?.name || selectedCategory;
     }
-    return 'Tarifler';
+    return 'Recipes';
   };
 
   // Determine page title
   const getTitle = () => {
     if (searchQuery) {
-      return `"${searchQuery}" için sonuçlar`;
+      return `Results for "${searchQuery}"`;
     }
     if (selectedCategory) {
       return getCategoryName();
     }
-    return 'Tarifleri Keşfet';
+    return 'Discover Recipes';
   };
 
   return (
@@ -34,7 +34,7 @@ export default function HomePage() {
         <h1 className="font-display text-3xl font-bold text-foreground lg:text-4xl">
           {searchQuery ? (
             <>
-              Arama: <span className="gradient-text">{searchQuery}</span>
+              Search: <span className="gradient-text">{searchQuery}</span>
             </>
           ) : (
             <span className="gradient-text">{getTitle()}</span>
@@ -42,8 +42,8 @@ export default function HomePage() {
         </h1>
         <p className="text-muted-foreground">
           {searchQuery
-            ? `${recipes.length} tarif bulundu`
-            : 'Dünyanın dört bir yanından lezzetli tarifleri keşfedin'}
+            ? `${recipes.length} recipes found`
+            : 'Discover delicious recipes from around the world'}
         </p>
       </div>
 
@@ -58,7 +58,7 @@ export default function HomePage() {
       <RecipeGrid 
         recipes={recipes} 
         isLoading={isLoading} 
-        emptyMessage={searchQuery ? 'Aramanızla eşleşen tarif bulunamadı' : 'Bu kategoride tarif bulunamadı'}
+        emptyMessage={searchQuery ? 'No recipes found matching your search' : 'No recipes found in this category'}
       />
     </div>
   );

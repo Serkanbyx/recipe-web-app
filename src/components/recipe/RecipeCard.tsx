@@ -74,7 +74,7 @@ export default function RecipeCard({ recipe, index = 0 }: RecipeCardProps) {
               ? 'bg-red-500 text-white'
               : 'bg-black/40 text-white hover:bg-red-500'
           )}
-          aria-label={isLiked ? 'Favorilerden kaldır' : 'Favorilere ekle'}
+          aria-label={isLiked ? 'Remove from favorites' : 'Add to favorites'}
         >
           <Heart
             className={cn('h-4 w-4', isLiked && 'fill-current')}
@@ -92,7 +92,7 @@ export default function RecipeCard({ recipe, index = 0 }: RecipeCardProps) {
         <div className="absolute left-3 bottom-3 flex gap-1">
           {recipe.vegetarian && (
             <span className="rounded-full bg-green-500/90 px-2 py-0.5 text-[10px] font-medium text-white">
-              Vejetaryen
+              Vegetarian
             </span>
           )}
           {recipe.vegan && (
@@ -102,7 +102,7 @@ export default function RecipeCard({ recipe, index = 0 }: RecipeCardProps) {
           )}
           {recipe.glutenFree && (
             <span className="rounded-full bg-amber-500/90 px-2 py-0.5 text-[10px] font-medium text-white">
-              Glutensiz
+              Gluten-Free
             </span>
           )}
         </div>
@@ -119,13 +119,13 @@ export default function RecipeCard({ recipe, index = 0 }: RecipeCardProps) {
           {readyInMinutes && (
             <span className="flex items-center gap-1">
               <Clock className="h-3.5 w-3.5" />
-              {readyInMinutes} dk
+              {readyInMinutes} min
             </span>
           )}
           {servings && (
             <span className="flex items-center gap-1">
               <Users className="h-3.5 w-3.5" />
-              {servings} kişilik
+              {servings} servings
             </span>
           )}
         </div>

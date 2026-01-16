@@ -8,7 +8,7 @@ import { useRecipeStore } from '@/store/recipeStore';
 
 // Zod schema for search validation - minimum 2 characters
 const searchSchema = z.object({
-  query: z.string().min(2, 'En az 2 karakter girin'),
+  query: z.string().min(2, 'Enter at least 2 characters'),
 });
 
 type SearchFormData = z.infer<typeof searchSchema>;
@@ -49,9 +49,9 @@ export default function SearchForm() {
         <Input
           {...register('query')}
           type="text"
-          placeholder="Tarif ara..."
+          placeholder="Search recipes..."
           className="pl-10 pr-20 h-11 bg-secondary/50 border-0 focus-visible:ring-primary"
-          aria-label="Tarif ara"
+          aria-label="Search recipes"
         />
 
         <div className="absolute right-1 flex items-center gap-1">
@@ -62,7 +62,7 @@ export default function SearchForm() {
               size="icon"
               className="h-8 w-8"
               onClick={handleClear}
-              aria-label="Aramayı temizle"
+              aria-label="Clear search"
             >
               <X className="h-4 w-4" />
             </Button>
@@ -74,7 +74,7 @@ export default function SearchForm() {
             className="h-8"
             disabled={isLoading}
           >
-            Ara
+            Search
           </Button>
         </div>
       </div>

@@ -23,7 +23,7 @@ export default function CategoryFilter({ onCategorySelect }: CategoryFilterProps
   return (
     <div className="space-y-2">
       <h3 className="px-2 text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-        Mutfaklar
+        Cuisines
       </h3>
       
       <nav className="space-y-1">

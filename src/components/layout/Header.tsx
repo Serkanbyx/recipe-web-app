@@ -24,7 +24,7 @@ export default function Header() {
             <ChefHat className="h-5 w-5 text-primary-foreground" />
           </div>
           <span className="font-display text-xl font-bold hidden sm:block">
-            Tarif<span className="text-primary">App</span>
+            Recipe<span className="text-primary">App</span>
           </span>
         </Link>
 
@@ -39,14 +39,14 @@ export default function Header() {
             <DrawerTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Menu className="h-5 w-5" />
-                <span className="sr-only">Menüyü aç</span>
+                <span className="sr-only">Open menu</span>
               </Button>
             </DrawerTrigger>
             <DrawerContent side="left">
               <DrawerHeader>
                 <DrawerTitle className="flex items-center gap-2">
                   <ChefHat className="h-5 w-5 text-primary" />
-                  Mutfaklar
+                  Cuisines
                 </DrawerTitle>
               </DrawerHeader>
               <div className="mt-4 overflow-y-auto max-h-[70vh]">

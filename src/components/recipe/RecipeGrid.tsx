@@ -15,7 +15,7 @@ interface RecipeGridProps {
 export default function RecipeGrid({ 
   recipes, 
   isLoading = false, 
-  emptyMessage = 'Tarif bulunamadı' 
+  emptyMessage = 'No recipes found' 
 }: RecipeGridProps) {
   // Show skeletons while loading
   if (isLoading) {
@@ -37,7 +37,7 @@ export default function RecipeGrid({
           {emptyMessage}
         </h3>
         <p className="mt-2 text-muted-foreground">
-          Başka bir şey aramayı deneyin veya kategorileri keşfedin
+          Try searching for something else or explore categories
         </p>
       </div>
     );

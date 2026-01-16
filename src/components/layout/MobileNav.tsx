@@ -8,8 +8,8 @@ import { cn } from '@/lib/utils';
  */
 export default function MobileNav() {
   const navItems = [
-    { to: '/', icon: Home, label: 'Ana Sayfa' },
-    { to: '/favorites', icon: Heart, label: 'Favoriler' },
+    { to: '/', icon: Home, label: 'Home' },
+    { to: '/favorites', icon: Heart, label: 'Favorites' },
   ];
 
   return (

@@ -126,7 +126,7 @@ export const useRecipeStore = create<RecipeState>()((set, get) => ({
       set({ recipes, isLoading: false });
     } catch (error) {
       set({ 
-        error: 'Tarifler yüklenirken hata oluştu. Lütfen tekrar deneyin.', 
+        error: 'Failed to load recipes. Please try again.', 
         isLoading: false,
         recipes: []
       });
@@ -140,7 +140,7 @@ export const useRecipeStore = create<RecipeState>()((set, get) => ({
       set({ recipes, isLoading: false });
     } catch (error) {
       set({ 
-        error: 'Arama yapılırken hata oluştu. Lütfen tekrar deneyin.', 
+        error: 'Search failed. Please try again.', 
         isLoading: false,
         recipes: []
       });
@@ -212,7 +212,7 @@ export const useRecipeStore = create<RecipeState>()((set, get) => ({
       set({ recipes: previews, isLoading: false });
     } catch (error) {
       set({ 
-        error: 'Tarifler yüklenirken hata oluştu.', 
+        error: 'Failed to load recipes.', 
         isLoading: false,
         recipes: []
       });

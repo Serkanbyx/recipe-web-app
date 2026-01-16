@@ -1,32 +1,32 @@
 # 🍳 Recipe App
 
-Modern, PWA destekli tarif uygulaması. React, TypeScript ve Tailwind CSS ile geliştirildi.
+Modern, PWA-supported recipe application. Built with React, TypeScript, and Tailwind CSS.
 
-## ✨ Özellikler
+## ✨ Features
 
-- 🔍 **Tarif Arama** - En az 2 karakter ile tarif arayın
-- 🌍 **Mutfak Filtresi** - İtalyan, Meksika, Çin vb. mutfaklara göre filtreleyin
-- ❤️ **Favoriler** - Tarifleri çevrimdışı erişim için kaydedin
-- 📱 **PWA Desteği** - Uygulama olarak kurun, çevrimdışı çalışsın
-- 📱 **Responsive Tasarım** - Tüm cihazlarda güzel görünüm
+- 🔍 **Recipe Search** - Search recipes with at least 2 characters
+- 🌍 **Cuisine Filter** - Filter by cuisines like Italian, Mexican, Chinese, etc.
+- ❤️ **Favorites** - Save recipes for offline access
+- 📱 **PWA Support** - Install as an app, works offline
+- 📱 **Responsive Design** - Beautiful on all devices
 
-## 🛠️ Teknoloji Stack
+## 🛠️ Tech Stack
 
-| Kategori | Teknoloji |
-|----------|-----------|
-| Framework | React 18 + Vite |
-| Dil | TypeScript |
-| State | Zustand |
-| Form | React Hook Form + Zod |
-| Routing | React Router v6 |
-| API | Axios + Spoonacular |
-| Styling | Tailwind CSS + shadcn/ui |
-| PWA | vite-plugin-pwa |
-| Backend | Netlify Functions |
+| Category  | Technology               |
+| --------- | ------------------------ |
+| Framework | React 18 + Vite          |
+| Language  | TypeScript               |
+| State     | Zustand                  |
+| Form      | React Hook Form + Zod    |
+| Routing   | React Router v6          |
+| API       | Axios + Spoonacular      |
+| Styling   | Tailwind CSS + shadcn/ui |
+| PWA       | vite-plugin-pwa          |
+| Backend   | Netlify Functions        |
 
-## 🔐 API Güvenliği
+## 🔐 API Security
 
-Bu proje **Netlify Functions** kullanarak API anahtarını güvenli bir şekilde saklar:
+This project uses **Netlify Functions** to securely store the API key:
 
 ```
 ┌─────────────┐     ┌──────────────────┐     ┌─────────────────┐
@@ -34,13 +34,13 @@ Bu proje **Netlify Functions** kullanarak API anahtarını güvenli bir şekilde
 │  (Browser)  │     │  (Server-side)   │     │     API         │
 └─────────────┘     └──────────────────┘     └─────────────────┘
                            │
-                    API Key burada
-                    (Güvenli!)
+                    API Key here
+                    (Secure!)
 ```
 
-## 🚀 Kurulum
+## 🚀 Installation
 
-### 1. Bağımlılıkları Yükle
+### 1. Install Dependencies
 
 ```bash
 npm install
@@ -48,34 +48,34 @@ npm install
 
 ### 2. Environment Variables
 
-#### Lokal Geliştirme İçin
+#### For Local Development
 
-Proje kök dizininde `.env` dosyası oluşturun:
+Create a `.env` file in the project root:
 
 ```env
-# Lokal geliştirme için (Vite ile)
+# For local development (with Vite)
 VITE_SPOONACULAR_API_KEY=your_api_key_here
 
-# Netlify Functions için
+# For Netlify Functions
 SPOONACULAR_API_KEY=your_api_key_here
 ```
 
-#### Netlify Deploy İçin
+#### For Netlify Deploy
 
-Netlify Dashboard'da environment variable ekleyin:
+Add environment variable in Netlify Dashboard:
 
 1. **Site Settings** → **Environment variables**
-2. Yeni variable ekleyin:
+2. Add new variable:
    - Key: `SPOONACULAR_API_KEY`
    - Value: `your_api_key_here`
 
-### 3. Geliştirme Sunucusunu Başlat
+### 3. Start Development Server
 
 ```bash
-# Sadece Vite (doğrudan API çağrıları)
+# Vite only (direct API calls)
 npm run dev
 
-# Netlify Functions ile (production simülasyonu)
+# With Netlify Functions (production simulation)
 npm run netlify
 ```
 
@@ -85,23 +85,23 @@ npm run netlify
 npm run build
 ```
 
-## 📁 Proje Yapısı
+## 📁 Project Structure
 
 ```
 ├── netlify/
 │   └── functions/
-│       └── recipes.ts      # API proxy (güvenli)
+│       └── recipes.ts      # API proxy (secure)
 ├── public/
 │   ├── favicon.svg
-│   └── pwa-*.png          # PWA ikonları
+│   └── pwa-*.png          # PWA icons
 ├── src/
 │   ├── components/
 │   │   ├── layout/        # Header, Sidebar, Layout
 │   │   ├── recipe/        # RecipeCard, Grid, Filter
 │   │   └── ui/            # Button, Input, Tabs, Drawer
 │   ├── lib/
-│   │   ├── api.ts         # API fonksiyonları
-│   │   └── utils.ts       # Utility fonksiyonlar
+│   │   ├── api.ts         # API functions
+│   │   └── utils.ts       # Utility functions
 │   ├── pages/
 │   │   ├── HomePage.tsx
 │   │   ├── RecipeDetailPage.tsx
@@ -109,49 +109,49 @@ npm run build
 │   ├── store/
 │   │   └── recipeStore.ts # Zustand store
 │   └── types/
-│       └── recipe.ts      # TypeScript tipler
-├── .env                   # Environment variables (gitignore'da)
-├── .env.example           # Örnek env dosyası
-└── netlify.toml           # Netlify konfigürasyonu
+│       └── recipe.ts      # TypeScript types
+├── .env                   # Environment variables (in gitignore)
+├── .env.example           # Example env file
+└── netlify.toml           # Netlify configuration
 ```
 
 ## 🌐 API Endpoints
 
-Netlify Functions aracılığıyla:
+Via Netlify Functions:
 
-| Endpoint | Açıklama |
-|----------|----------|
-| `/api/recipes?action=search&query=pasta` | Tarif ara |
-| `/api/recipes?action=detail&id=123` | Tarif detayı |
-| `/api/recipes?action=categories` | Mutfak listesi |
-| `/api/recipes?action=byCategory&cuisine=italian` | Mutfağa göre |
-| `/api/recipes?action=random&number=12` | Rastgele tarifler |
+| Endpoint                                         | Description    |
+| ------------------------------------------------ | -------------- |
+| `/api/recipes?action=search&query=pasta`         | Search recipes |
+| `/api/recipes?action=detail&id=123`              | Recipe detail  |
+| `/api/recipes?action=categories`                 | Cuisine list   |
+| `/api/recipes?action=byCategory&cuisine=italian` | By cuisine     |
+| `/api/recipes?action=random&number=12`           | Random recipes |
 
-## 🚀 Netlify'a Deploy
+## 🚀 Deploy to Netlify
 
-### Otomatik Deploy (Önerilen)
+### Automatic Deploy (Recommended)
 
-1. GitHub'a push edin
-2. Netlify'da yeni site oluşturun
-3. GitHub repo'yu bağlayın
-4. Environment variable ekleyin:
+1. Push to GitHub
+2. Create new site on Netlify
+3. Connect GitHub repo
+4. Add environment variable:
    - `SPOONACULAR_API_KEY`
 5. Deploy!
 
-### Manuel Deploy
+### Manual Deploy
 
 ```bash
 npm run build
 netlify deploy --prod
 ```
 
-## 📝 Notlar
+## 📝 Notes
 
-- **API Limiti**: Spoonacular ücretsiz plan günde 150 istek
-- **Offline**: Favoriler localStorage'da saklanır
-- **PWA**: Service Worker ile cache yönetimi
-- **Güvenlik**: API anahtarı asla frontend'de açığa çıkmaz
+- **API Limit**: Spoonacular free plan allows 150 requests per day
+- **Offline**: Favorites are stored in localStorage
+- **PWA**: Cache management with Service Worker
+- **Security**: API key is never exposed in frontend
 
-## 📄 Lisans
+## 📄 License
 
 MIT

@@ -40,12 +40,12 @@ export default function RecipeDetailPage() {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
         <div className="mb-4 text-6xl">🍽️</div>
-        <h2 className="text-2xl font-bold text-foreground">Tarif bulunamadı</h2>
+        <h2 className="text-2xl font-bold text-foreground">Recipe not found</h2>
         <p className="mt-2 text-muted-foreground">
-          Bu tarif kaldırılmış veya mevcut değil
+          This recipe has been removed or does not exist
         </p>
         <Button onClick={() => navigate('/')} className="mt-4">
-          Tariflere dön
+          Back to recipes
         </Button>
       </div>
     );
@@ -72,7 +72,7 @@ export default function RecipeDetailPage() {
         className="mb-4 -ml-2"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
-        Geri
+        Back
       </Button>
 
       <article className="space-y-8">
@@ -98,7 +98,7 @@ export default function RecipeDetailPage() {
               ))}
               {currentRecipe.vegetarian && (
                 <span className="rounded-full bg-green-500 px-3 py-1 text-xs font-medium text-white">
-                  Vejetaryen
+                  Vegetarian
                 </span>
               )}
               {currentRecipe.vegan && (
@@ -108,7 +108,7 @@ export default function RecipeDetailPage() {
               )}
               {currentRecipe.glutenFree && (
                 <span className="rounded-full bg-amber-500 px-3 py-1 text-xs font-medium text-white">
-                  Glutensiz
+                  Gluten-Free
                 </span>
               )}
             </div>
@@ -127,7 +127,7 @@ export default function RecipeDetailPage() {
                 ? 'bg-red-500 text-white'
                 : 'bg-black/40 text-white hover:bg-red-500'
             )}
-            aria-label={isLiked ? 'Favorilerden kaldır' : 'Favorilere ekle'}
+            aria-label={isLiked ? 'Remove from favorites' : 'Add to favorites'}
           >
             <Heart className={cn('h-6 w-6', isLiked && 'fill-current')} />
           </button>
@@ -138,19 +138,19 @@ export default function RecipeDetailPage() {
           {currentRecipe.readyInMinutes && (
             <div className="flex items-center gap-2 rounded-lg bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground">
               <Clock className="h-4 w-4" />
-              {currentRecipe.readyInMinutes} dakika
+              {currentRecipe.readyInMinutes} min
             </div>
           )}
           {currentRecipe.servings && (
             <div className="flex items-center gap-2 rounded-lg bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground">
               <Users className="h-4 w-4" />
-              {currentRecipe.servings} kişilik
+              {currentRecipe.servings} servings
             </div>
           )}
           {currentRecipe.healthScore && (
             <div className="flex items-center gap-2 rounded-lg bg-green-500/10 px-4 py-2 text-sm font-medium text-green-500">
               <Flame className="h-4 w-4" />
-              Sağlık Puanı: {currentRecipe.healthScore}
+              Health Score: {currentRecipe.healthScore}
             </div>
           )}
         </div>
@@ -159,7 +159,7 @@ export default function RecipeDetailPage() {
         {currentRecipe.summary && (
           <div className="rounded-xl bg-card border border-border p-6">
             <h2 className="font-display text-xl font-bold text-foreground mb-3">
-              Özet
+              Summary
             </h2>
             <p 
               className="text-muted-foreground leading-relaxed"
@@ -179,7 +179,7 @@ export default function RecipeDetailPage() {
           <div className="lg:col-span-1">
             <div className="sticky top-24 rounded-xl bg-card border border-border p-6">
               <h2 className="font-display text-xl font-bold text-foreground mb-4">
-                Malzemeler
+                Ingredients
               </h2>
               <ul className="space-y-3">
                 {ingredients.map((ingredient, index) => (
@@ -200,7 +200,7 @@ export default function RecipeDetailPage() {
           {/* Instructions */}
           <div className="lg:col-span-2">
             <h2 className="font-display text-xl font-bold text-foreground mb-4">
-              Hazırlanışı
+              Instructions
             </h2>
             <div className="space-y-4">
               {instructions.length > 0 ? (
@@ -219,7 +219,7 @@ export default function RecipeDetailPage() {
                 ))
               ) : (
                 <div className="rounded-lg bg-card border border-border p-4 text-muted-foreground">
-                  Bu tarif için detaylı talimatlar mevcut değil.
+                  Detailed instructions are not available for this recipe.
                 </div>
               )}
             </div>

@@ -30,12 +30,12 @@ export default function FavoritesPage() {
       {/* Page header */}
       <div className="space-y-1">
         <h1 className="font-display text-3xl font-bold lg:text-4xl">
-          <span className="gradient-text">Favorilerim</span>
+          <span className="gradient-text">My Favorites</span>
         </h1>
         <p className="text-muted-foreground">
           {favorites.length > 0
-            ? `${favorites.length} kayıtlı tarif${favorites.length !== 1 ? 'iniz' : 'iniz'} var`
-            : 'Tarifleri kaydedin ve çevrimdışıyken bile erişin!'}
+            ? `${favorites.length} saved recipe${favorites.length !== 1 ? 's' : ''}`
+            : 'Save recipes and access them even when offline!'}
         </p>
       </div>
 
@@ -48,15 +48,15 @@ export default function FavoritesPage() {
             <Heart className="h-10 w-10 text-primary" />
           </div>
           <h3 className="text-xl font-semibold text-foreground">
-            Henüz favori yok
+            No favorites yet
           </h3>
           <p className="mt-2 max-w-sm text-muted-foreground">
-            Tarifleri keşfedin ve kalp ikonuna tıklayarak favorilerinize ekleyin.
-            Çevrimdışıyken bile erişebilirsiniz!
+            Discover recipes and click the heart icon to add them to your favorites.
+            Access them even when offline!
           </p>
           <Link to="/">
             <Button className="mt-6">
-              Tarifleri Keşfet
+              Discover Recipes
             </Button>
           </Link>
         </div>
