@@ -29,15 +29,15 @@ export const handler: Handler = async (event: HandlerEvent) => {
     };
   }
 
-  const { action, query, id, category, number = '12' } = event.queryStringParameters || {};
+  const { action, query, id, category, cuisine, number = '12', offset = '0' } = event.queryStringParameters || {};
 
   try {
     let url = '';
 
     switch (action) {
       case 'search':
-        // Search recipes by query
-        url = `${SPOONACULAR_BASE_URL}/recipes/complexSearch?apiKey=${API_KEY}&query=${encodeURIComponent(query || '')}&number=${number}&addRecipeInformation=true&fillIngredients=true`;
+        // Search recipes by query with pagination support
+        url = `${SPOONACULAR_BASE_URL}/recipes/complexSearch?apiKey=${API_KEY}&query=${encodeURIComponent(query || '')}&number=${number}&offset=${offset}&addRecipeInformation=true&fillIngredients=true`;
         break;
 
       case 'random':
@@ -58,8 +58,9 @@ export const handler: Handler = async (event: HandlerEvent) => {
         break;
 
       case 'byCategory':
-        // Search by cuisine/category
-        url = `${SPOONACULAR_BASE_URL}/recipes/complexSearch?apiKey=${API_KEY}&cuisine=${encodeURIComponent(category || '')}&number=${number}&addRecipeInformation=true`;
+        // Search by cuisine/category with pagination support
+        const cuisineName = cuisine || category || '';
+        url = `${SPOONACULAR_BASE_URL}/recipes/complexSearch?apiKey=${API_KEY}&cuisine=${encodeURIComponent(cuisineName)}&number=${number}&offset=${offset}&addRecipeInformation=true`;
         break;
 
       case 'categories':

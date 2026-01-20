@@ -1,6 +1,13 @@
 import { create } from 'zustand';
 import type { Recipe, RecipePreview, Category } from '@/types/recipe';
-import { searchRecipes, getRecipesByCategory, getCategories, getRecipeById, getRandomRecipes } from '@/lib/api';
+import { 
+  searchRecipes, 
+  getRecipesByCategory, 
+  getCategories, 
+  getRecipeById, 
+  getRandomRecipes,
+  RECIPES_PER_PAGE 
+} from '@/lib/api';
 
 // Store state interface
 interface RecipeState {
@@ -8,6 +15,12 @@ interface RecipeState {
   recipes: RecipePreview[];
   isLoading: boolean;
   error: string | null;
+
+  // Pagination state
+  page: number;
+  hasMore: boolean;
+  totalResults: number;
+  isLoadingMore: boolean;
 
   // Categories
   categories: Category[];
@@ -45,7 +58,9 @@ interface RecipeState {
   fetchCategories: () => Promise<void>;
   fetchRecipeDetail: (id: string) => Promise<void>;
   fetchRandomRecipes: () => Promise<void>;
+  fetchMoreRecipes: () => Promise<void>;
   clearSearch: () => void;
+  resetPagination: () => void;
 }
 
 // Separate store for persisted favorites
@@ -74,6 +89,13 @@ export const useRecipeStore = create<RecipeState>()((set, get) => ({
   recipes: [],
   isLoading: false,
   error: null,
+  
+  // Pagination initial state
+  page: 0,
+  hasMore: true,
+  totalResults: 0,
+  isLoadingMore: false,
+  
   categories: [],
   selectedCategory: null,
   searchQuery: '',
@@ -118,31 +140,66 @@ export const useRecipeStore = create<RecipeState>()((set, get) => ({
     set({ favorites });
   },
 
+  // Reset pagination state
+  resetPagination: () => {
+    set({ page: 0, hasMore: true, totalResults: 0 });
+  },
+
   // Async actions
   fetchRecipesByCategory: async (category) => {
-    set({ isLoading: true, error: null, selectedCategory: category, searchQuery: '' });
+    set({ 
+      isLoading: true, 
+      error: null, 
+      selectedCategory: category, 
+      searchQuery: '',
+      page: 0,
+      hasMore: true,
+      totalResults: 0
+    });
     try {
-      const recipes = await getRecipesByCategory(category);
-      set({ recipes, isLoading: false });
+      const { recipes, totalResults, hasMore } = await getRecipesByCategory(category, 0);
+      set({ 
+        recipes, 
+        isLoading: false,
+        totalResults,
+        hasMore,
+        page: 1
+      });
     } catch (error) {
       set({ 
         error: 'Failed to load recipes. Please try again.', 
         isLoading: false,
-        recipes: []
+        recipes: [],
+        hasMore: false
       });
     }
   },
 
   fetchRecipesBySearch: async (query) => {
-    set({ isLoading: true, error: null, searchQuery: query, selectedCategory: null });
+    set({ 
+      isLoading: true, 
+      error: null, 
+      searchQuery: query, 
+      selectedCategory: null,
+      page: 0,
+      hasMore: true,
+      totalResults: 0
+    });
     try {
-      const recipes = await searchRecipes(query);
-      set({ recipes, isLoading: false });
+      const { recipes, totalResults, hasMore } = await searchRecipes(query, 0);
+      set({ 
+        recipes, 
+        isLoading: false,
+        totalResults,
+        hasMore,
+        page: 1
+      });
     } catch (error) {
       set({ 
         error: 'Search failed. Please try again.', 
         isLoading: false,
-        recipes: []
+        recipes: [],
+        hasMore: false
       });
     }
   },
@@ -219,8 +276,58 @@ export const useRecipeStore = create<RecipeState>()((set, get) => ({
     }
   },
 
+  // Fetch more recipes for infinite scroll
+  fetchMoreRecipes: async () => {
+    const { 
+      isLoadingMore, 
+      hasMore, 
+      page, 
+      searchQuery, 
+      selectedCategory, 
+      recipes 
+    } = get();
+    
+    // Prevent duplicate requests
+    if (isLoadingMore || !hasMore) return;
+    
+    set({ isLoadingMore: true });
+    
+    try {
+      const offset = page * RECIPES_PER_PAGE;
+      
+      let response;
+      if (searchQuery) {
+        response = await searchRecipes(searchQuery, offset);
+      } else if (selectedCategory) {
+        response = await getRecipesByCategory(selectedCategory, offset);
+      } else {
+        set({ isLoadingMore: false });
+        return;
+      }
+      
+      const { recipes: newRecipes, hasMore: moreAvailable } = response;
+      
+      // Filter out duplicates by id
+      const existingIds = new Set(recipes.map(r => r.id));
+      const uniqueNewRecipes = newRecipes.filter(r => !existingIds.has(r.id));
+      
+      set({ 
+        recipes: [...recipes, ...uniqueNewRecipes],
+        page: page + 1,
+        hasMore: moreAvailable,
+        isLoadingMore: false
+      });
+    } catch (error) {
+      console.error('Error fetching more recipes:', error);
+      set({ 
+        isLoadingMore: false,
+        error: 'Failed to load more recipes.'
+      });
+    }
+  },
+
   clearSearch: () => {
-    set({ searchQuery: '' });
+    set({ searchQuery: '', page: 0, hasMore: true, totalResults: 0 });
     const { categories, selectedCategory } = get();
     if (categories.length > 0) {
       const category = selectedCategory || categories[0].id;

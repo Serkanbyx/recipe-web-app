@@ -1,3 +1,4 @@
+import { memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, Clock, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -12,12 +13,13 @@ interface RecipeCardProps {
 /**
  * Recipe card component for grid display
  * Shows recipe thumbnail, name, cooking time, and favorite button
+ * Memoized to prevent unnecessary re-renders
  */
-export default function RecipeCard({ recipe, index = 0 }: RecipeCardProps) {
+function RecipeCard({ recipe, index = 0 }: RecipeCardProps) {
   const { isFavorite, addToFavorites, removeFromFavorites, fetchRecipeDetail } = useRecipeStore();
   const isLiked = isFavorite(recipe.id);
 
-  const handleFavoriteClick = async (e: React.MouseEvent) => {
+  const handleFavoriteClick = useCallback(async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -36,7 +38,7 @@ export default function RecipeCard({ recipe, index = 0 }: RecipeCardProps) {
         }
       }
     }
-  };
+  }, [isLiked, recipe, removeFromFavorites, addToFavorites, fetchRecipeDetail]);
 
   // Get display values
   const readyInMinutes = 'readyInMinutes' in recipe ? recipe.readyInMinutes : undefined;
@@ -133,3 +135,13 @@ export default function RecipeCard({ recipe, index = 0 }: RecipeCardProps) {
     </Link>
   );
 }
+
+/**
+ * Memoized RecipeCard component
+ * Only re-renders when recipe.id changes or favorite status changes
+ */
+export default memo(RecipeCard, (prevProps, nextProps) => {
+  // Only re-render if recipe id changes
+  return prevProps.recipe.id === nextProps.recipe.id && 
+         prevProps.index === nextProps.index;
+});

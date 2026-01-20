@@ -31,13 +31,13 @@ function buildUrl(action: string, params: Record<string, string> = {}): string {
     
     switch (action) {
       case 'search':
-        return `${API_BASE_URL}/recipes/complexSearch?${searchParams}&addRecipeInformation=true&fillIngredients=true`;
+        return `${API_BASE_URL}/recipes/complexSearch?${searchParams}&addRecipeInformation=true&fillIngredients=true&offset=${params.offset || '0'}`;
       case 'random':
         return `${API_BASE_URL}/recipes/random?${searchParams}`;
       case 'detail':
         return `${API_BASE_URL}/recipes/${params.id}/information?apiKey=${DEV_API_KEY}&includeNutrition=false`;
       case 'byCategory':
-        return `${API_BASE_URL}/recipes/complexSearch?${searchParams}&addRecipeInformation=true`;
+        return `${API_BASE_URL}/recipes/complexSearch?${searchParams}&addRecipeInformation=true&offset=${params.offset || '0'}`;
       default:
         return API_BASE_URL;
     }
@@ -48,16 +48,43 @@ function buildUrl(action: string, params: Record<string, string> = {}): string {
   }
 }
 
+// Pagination config
+export const RECIPES_PER_PAGE = 12;
+
 /**
- * Search recipes by query
- * @param query - Search term (minimum 2 characters)
+ * Paginated search response
  */
-export async function searchRecipes(query: string): Promise<RecipePreview[]> {
+export interface PaginatedResponse {
+  recipes: RecipePreview[];
+  totalResults: number;
+  hasMore: boolean;
+}
+
+/**
+ * Search recipes by query with pagination support
+ * @param query - Search term (minimum 2 characters)
+ * @param offset - Number of results to skip (for pagination)
+ */
+export async function searchRecipes(
+  query: string, 
+  offset: number = 0
+): Promise<PaginatedResponse> {
   try {
-    const url = buildUrl('search', { query, number: '12' });
+    const url = buildUrl('search', { 
+      query, 
+      number: String(RECIPES_PER_PAGE),
+      offset: String(offset)
+    });
     const response = await api.get<SpoonacularSearchResponse>(url);
     
-    return response.data.results || [];
+    const totalResults = response.data.totalResults || 0;
+    const recipes = response.data.results || [];
+    
+    return {
+      recipes,
+      totalResults,
+      hasMore: offset + recipes.length < totalResults
+    };
   } catch (error) {
     console.error('Error searching recipes:', error);
     throw error;
@@ -113,15 +140,30 @@ export async function getCategories(): Promise<Category[]> {
 }
 
 /**
- * Get recipes by category/cuisine
+ * Get recipes by category/cuisine with pagination support
  * @param category - Category/cuisine name
+ * @param offset - Number of results to skip (for pagination)
  */
-export async function getRecipesByCategory(category: string): Promise<RecipePreview[]> {
+export async function getRecipesByCategory(
+  category: string,
+  offset: number = 0
+): Promise<PaginatedResponse> {
   try {
-    const url = buildUrl('byCategory', { cuisine: category, number: '12' });
+    const url = buildUrl('byCategory', { 
+      cuisine: category, 
+      number: String(RECIPES_PER_PAGE),
+      offset: String(offset)
+    });
     const response = await api.get<SpoonacularSearchResponse>(url);
     
-    return response.data.results || [];
+    const totalResults = response.data.totalResults || 0;
+    const recipes = response.data.results || [];
+    
+    return {
+      recipes,
+      totalResults,
+      hasMore: offset + recipes.length < totalResults
+    };
   } catch (error) {
     console.error('Error fetching recipes by category:', error);
     throw error;
