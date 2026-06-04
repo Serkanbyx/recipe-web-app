@@ -66,7 +66,7 @@ Access your saved recipes anytime, even offline.
 
 ```bash
 git clone https://github.com/Serkanbyx/recipe-web-app.git
-cd s2.2_Recipe-Web-App
+cd recipe-web-app
 ```
 
 2. **Install dependencies**
@@ -77,11 +77,19 @@ npm install
 
 3. **Set up environment variables**
 
-Create a `.env` file in the root directory:
+Copy the example file and add your key:
+
+```bash
+cp .env.example .env
+```
+
+Then set your Spoonacular API key in `.env`:
 
 ```env
 VITE_SPOONACULAR_API_KEY=your_api_key_here
 ```
+
+> The `VITE_` key is used only in local development. In production the key is read from the `SPOONACULAR_API_KEY` Netlify environment variable by the serverless function and is never exposed to the browser.
 
 4. **Start the development server**
 
@@ -99,6 +107,16 @@ Navigate to `http://localhost:5173`
 npm run build
 npm run preview
 ```
+
+### Available Scripts
+
+| Script            | Description                                       |
+| ----------------- | ------------------------------------------------- |
+| `npm run dev`     | Start the Vite development server                 |
+| `npm run build`   | Type-check and build the production bundle        |
+| `npm run preview` | Preview the production build locally              |
+| `npm run lint`    | Lint the codebase with ESLint                     |
+| `npm run netlify` | Run the app with Netlify Functions via Netlify CLI |
 
 ### Netlify Deployment
 
@@ -151,10 +169,10 @@ localStorage.setItem("recipe-app-favorites", JSON.stringify(favorites));
 
 ### Add New Cuisine Categories
 
-Edit `src/lib/api.ts` to add new categories:
+Cuisines are defined in a single shared source of truth, `src/lib/cuisines.ts`, which is consumed by both the client (`src/lib/api.ts`) and the Netlify proxy function. Add new categories there:
 
 ```typescript
-const categories = [
+export const CUISINES: Category[] = [
   { id: "italian", name: "Italian", image: "..." },
   { id: "your-cuisine", name: "Your Cuisine", image: "..." },
   // Add more cuisines

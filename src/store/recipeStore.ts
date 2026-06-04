@@ -165,7 +165,7 @@ export const useRecipeStore = create<RecipeState>()((set, get) => ({
         hasMore,
         page: 1
       });
-    } catch (error) {
+    } catch {
       set({ 
         error: 'Failed to load recipes. Please try again.', 
         isLoading: false,
@@ -194,7 +194,7 @@ export const useRecipeStore = create<RecipeState>()((set, get) => ({
         hasMore,
         page: 1
       });
-    } catch (error) {
+    } catch {
       set({ 
         error: 'Search failed. Please try again.', 
         isLoading: false,
@@ -236,7 +236,7 @@ export const useRecipeStore = create<RecipeState>()((set, get) => ({
       // Fetch from API
       const recipe = await getRecipeById(id);
       set({ currentRecipe: recipe, isLoadingDetail: false });
-    } catch (error) {
+    } catch {
       // Try to get from favorites if offline
       const { favorites } = get();
       const favoriteRecipe = favorites.find(f => f.id === Number(id));
@@ -267,7 +267,7 @@ export const useRecipeStore = create<RecipeState>()((set, get) => ({
         glutenFree: r.glutenFree,
       }));
       set({ recipes: previews, isLoading: false });
-    } catch (error) {
+    } catch {
       set({ 
         error: 'Failed to load recipes.', 
         isLoading: false,
