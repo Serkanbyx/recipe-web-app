@@ -27,13 +27,19 @@ A modern, responsive recipe discovery application built with React and TypeScrip
 
 Browse recipes by cuisine categories with a beautiful card-based layout.
 
+![Home Screen](docs/screenshots/home.png)
+
 ### Recipe Details
 
 View complete recipe information with ingredients list and step-by-step instructions.
 
+![Recipe Details](docs/screenshots/recipe-details.png)
+
 ### Favorites
 
 Access your saved recipes anytime, even offline.
+
+![Favorites](docs/screenshots/favorites.png)
 
 ## Technologies
 
